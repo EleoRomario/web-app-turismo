@@ -12,7 +12,7 @@ function EditTask({open, onClose, toEditTitle, toEditDescription, id}) {
   /* function to update firestore */
   const handleUpdate = async (e) => {
     e.preventDefault()
-    const taskDocRef = doc(db, 'tasks', id)
+    const taskDocRef = doc(db, 'departamentos', id)
     try{
       await updateDoc(taskDocRef, {
         title: title,

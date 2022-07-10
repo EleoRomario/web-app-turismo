@@ -15,4 +15,7 @@
   overflow-y: auto;
   color: hsl(210, 20%, 25%);
 }
+.taskItem img {
+  width: 100%;
+}
 

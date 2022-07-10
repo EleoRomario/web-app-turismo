@@ -9,7 +9,7 @@ function AddTask({onClose, open}) {
 
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [imageUrl, setImageUrl] = useState(null)
+  const [imageUrl, setImageUrl] = useState('null')
 
   /* function to add new task to firestore */
 

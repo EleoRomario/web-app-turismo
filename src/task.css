@@ -11,11 +11,6 @@
   box-sizing: border-box;
 }
 
-.task--borderColor{
-  border-color: green;
-  box-shadow: 0 6px 18px -9px hsl(210, 15%, 65%);
-}
-
 .task__body {
   display: flex;
   flex-direction: column;
@@ -114,4 +109,16 @@
 
 .task__deleteButton:active {
   color: hsl(0, 80%, 80%);
+}
+
+.task__deleteNedit .task__viewButton {
+  color: hsl(128, 80%, 80%);
+}
+
+.task__viewButton:hover {
+  color: hsl(125, 70%, 70%);
+}
+
+.task__viewButton:active {
+  color: hsl(120, 80%, 80%);
 }
