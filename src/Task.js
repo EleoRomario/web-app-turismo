@@ -7,7 +7,11 @@ import { db } from "./firebase";
 import { Departamento } from "./Departamento";
 
 function Task({ id, title, description, image }) {
-	const [open, setOpen] = useState({ edit: false, destinos: false, view: false });
+	const [open, setOpen] = useState({
+		edit: false,
+		destinos: false,
+		view: false,
+	});
 
 	const handleClose = () => {
 		setOpen({ edit: false, destinos: false, view: false });
@@ -25,6 +29,7 @@ function Task({ id, title, description, image }) {
 
 	return (
 		<div className="task">
+			<img src={image} alt="" className="dep_img" />
 			<div className="task__body">
 				<h2>{title}</h2>
 				<div className="task__buttons">
@@ -83,6 +88,7 @@ function Task({ id, title, description, image }) {
 					onClose={handleClose}
 					toEditTitle={title}
 					toEditDescription={description}
+					toEditImage={image}
 					open={open.edit}
 					id={id}
 				/>

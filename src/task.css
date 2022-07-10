@@ -9,6 +9,12 @@
   gap: 20px;
   align-items: center;
   box-sizing: border-box;
+  flex-direction: row;
+}
+.task .dep_img{
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
 }
 
 .task__body {

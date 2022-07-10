@@ -4,7 +4,7 @@ import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { EditDestino } from "./EditDestino";
 
-export const Destino = ({ idDep, id, title, description, latitud, longitud }) => {
+export const Destino = ({ idDep, id, title, description, latitud, longitud, image }) => {
 	const [open, setOpen] = useState({ edit: false, view: false });
 
 	const handleClose = () => {
@@ -24,9 +24,9 @@ export const Destino = ({ idDep, id, title, description, latitud, longitud }) =>
 
 	return (
 		<div className="task">
+				<img src={image} alt="" className="dep_img" />
 			<div className="task__body">
 				<h2>{title}</h2>
-				<p>{description}</p>
 				<div className="task__buttons">
 					<div className="task__deleteNedit">
 						<button
@@ -49,10 +49,11 @@ export const Destino = ({ idDep, id, title, description, latitud, longitud }) =>
 					onClose={handleClose}
 					toEditTitle={title}
 					toEditDescription={description}
-          toEditLatitud={latitud}
-          toEditLongitud={longitud}
+					toEditLatitud={latitud}
+					toEditLongitud={longitud}
+					toEditImage={image}
 					open={open.edit}
-          idDep={idDep}
+					idDep={idDep}
 					id={id}
 				/>
 			)}

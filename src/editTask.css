@@ -5,6 +5,17 @@
   margin-top: 10px;
   z-index: 100;
 }
+.editTask .image_edit{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.editTask .image_edit img{
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
 
 .editTask input{
   height: 40px;

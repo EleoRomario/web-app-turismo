@@ -2,7 +2,8 @@ import Modal from "../Modal";
 import { useState } from "react";
 import "../editTask.css";
 import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { db, storage } from "../firebase";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 export const EditDestino = ({
 	open,
@@ -11,6 +12,7 @@ export const EditDestino = ({
 	toEditDescription,
 	toEditLatitud,
 	toEditLongitud,
+	toEditImage,
   idDep,
 	id,
 }) => {
@@ -18,8 +20,17 @@ export const EditDestino = ({
 	const [description, setDescription] = useState(toEditDescription);
 	const [latitud, setLatitud] = useState(toEditLatitud);
 	const [longitud, setLongitud] = useState(toEditLongitud);
+	const [image, setImage] = useState(toEditImage);
 
-  console.log(idDep);
+  const imageHandler = async (e) => {
+		const archivo = e.target.files[0];
+		const storageRef = ref(storage, `images/${archivo.name}`);
+		const uploadImage = uploadBytesResumable(storageRef, archivo);
+		console.log("archivo cargado:", archivo.name);
+		const enlaceUrl = await getDownloadURL(uploadImage.snapshot.ref);
+		setImage(enlaceUrl);
+  };
+
 	/* function to update firestore */
 	const handleUpdate = async (e) => {
 		e.preventDefault();
@@ -30,6 +41,7 @@ export const EditDestino = ({
 				description: description,
         latitud: latitud,
         longitud: longitud,
+				image: image,
 			});
 			onClose();
 		} catch (err) {
@@ -66,6 +78,10 @@ export const EditDestino = ({
 					placeholder="Descripcion"
 					value={description}
 				></textarea>
+				<div className="image_edit">
+					<input type="file" onChange={imageHandler} />
+					<img src={image} alt="" />
+				</div>
 				{/* <input type="file" onChange={imageHandler} /> */}
 				<button type="submit">Edit</button>
 			</form>
