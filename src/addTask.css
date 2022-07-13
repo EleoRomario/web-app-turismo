@@ -6,7 +6,7 @@
   z-index: 100;
 }
 
-.addTask input{
+.addTask input, .addTask select{
   height: 40px;
   border: unset;
   font-size: 18px;

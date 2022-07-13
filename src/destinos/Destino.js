@@ -4,7 +4,7 @@ import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { EditDestino } from "./EditDestino";
 
-export const Destino = ({ idDep, id, title, description, latitud, longitud, image }) => {
+export const Destino = ({ idDep, id, title, description, latitud, longitud, category, image }) => {
 	const [open, setOpen] = useState({ edit: false, view: false });
 
 	const handleClose = () => {
@@ -52,6 +52,7 @@ export const Destino = ({ idDep, id, title, description, latitud, longitud, imag
 					toEditLatitud={latitud}
 					toEditLongitud={longitud}
 					toEditImage={image}
+					toEditCategory={category}
 					open={open.edit}
 					idDep={idDep}
 					id={id}

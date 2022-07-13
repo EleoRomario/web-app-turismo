@@ -17,7 +17,7 @@
   object-fit: cover;
 }
 
-.editTask input{
+.editTask input, .editTask select{
   height: 40px;
   border: unset;
   font-size: 18px;

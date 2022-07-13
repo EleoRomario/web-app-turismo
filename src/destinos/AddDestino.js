@@ -3,14 +3,15 @@ import { useState } from "react";
 import "../addTask.css";
 import { db, storage } from "../firebase";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export const AddDestino = ({ onClose, open, docId }) => {
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
-	const [imageUrl, setImageUrl] = useState("null");
+	const [imageUrl, setImageUrl] = useState(null);
 	const [latitud, setLatitud] = useState("");
 	const [longitud, setLongitud] = useState("");
+	const [category, setCategory] = useState("")
 
 	/* function to add new task to firestore */
 	console.log(docId);
@@ -18,10 +19,11 @@ export const AddDestino = ({ onClose, open, docId }) => {
 	const imageHandler = async (e) => {
 		const archivo = e.target.files[0];
 		const storageRef = ref(storage, `images/${archivo.name}`);
-		const uploadImage = uploadBytesResumable(storageRef, archivo);
-		console.log("archivo cargado:", archivo.name);
-		const enlaceUrl = await getDownloadURL(uploadImage.snapshot.ref);
-		setImageUrl(enlaceUrl);
+		uploadBytes(storageRef, archivo).then((snapshot) => {
+			getDownloadURL(snapshot.ref).then((downloadURL) => {
+				setImageUrl(downloadURL);
+			});
+		});
 	};
 
 	const handleSubmit = async (e) => {
@@ -34,6 +36,7 @@ export const AddDestino = ({ onClose, open, docId }) => {
 				image: imageUrl,
 				latitud: latitud,
 				longitud: longitud,
+				category: category,
 				created: Timestamp.now(),
 			});
 			onClose();
@@ -70,6 +73,19 @@ export const AddDestino = ({ onClose, open, docId }) => {
 					pattern="[0-9]+([\.,][0-9]+)?"
 					step="0.01"
 				/>
+				<select 
+					name="category"
+					onChange={(e) =>{
+						console.log(e.target.value);
+						setCategory(e.target.value)
+					}}
+					value = {category}
+				>
+					<option value="" hidden>Seleccione una categoria</option>
+					<option value="aventura">Aventura</option>
+					<option value="cultural">Cultural</option>
+					<option value="extremo">Extremo</option>
+				</select>
 				<textarea
 					onChange={(e) => setDescription(e.target.value)}
 					placeholder="Descripcion"

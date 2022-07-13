@@ -41,6 +41,7 @@ export const DestinosManager = ({ id }) => {
 							description={task.data.description}
 							latitud={task.data.latitud}
 							longitud={task.data.longitud}
+							category={task.data.category}
 							image={task.data.image}
 						/>
 					))}

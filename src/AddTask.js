@@ -3,23 +3,25 @@ import {useState} from 'react'
 import './addTask.css'
 import { db, storage} from './firebase'
 import {collection, addDoc, Timestamp} from 'firebase/firestore'
-import {ref, uploadBytesResumable, getDownloadURL} from 'firebase/storage'
+import {ref, uploadBytes, getDownloadURL} from 'firebase/storage'
 
 function AddTask({onClose, open}) {
 
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [imageUrl, setImageUrl] = useState('null')
+  const [imageUrl, setImageUrl] = useState(null)
 
   /* function to add new task to firestore */
 
-  const imageHandler = async (e) => {
+  const imageHandler = (e) => {
+		if(imageUrl == null) return
 		const archivo = e.target.files[0];
 		const storageRef = ref(storage, `images/${archivo.name}`);
-		const uploadImage = uploadBytesResumable(storageRef, archivo);
-		console.log("archivo cargado:", archivo.name);
-		const enlaceUrl = await getDownloadURL(uploadImage.snapshot.ref);
-		setImageUrl(enlaceUrl);
+		uploadBytes(storageRef, archivo).then((snapshot) => {
+			getDownloadURL(snapshot.ref).then((downloadURL) => {
+				setImageUrl(downloadURL);
+			});
+		});
   };
 
   const handleSubmit = async (e) => {
@@ -39,12 +41,16 @@ function AddTask({onClose, open}) {
   }
 
   return (
-		<Modal modalLable="Add Destino" onClose={onClose} open={open}>
-			<form onSubmit={handleSubmit} className="addTask" name="addTask">
+		<Modal modalLable="Add Departamento" onClose={onClose} open={open}>
+			<form
+				onSubmit={handleSubmit}
+				className="addTask editTask"
+				name="addTask"
+			>
 				<input
 					type="text"
 					name="title"
-					onChange={(e) => setTitle(e.target.value.toUpperCase())}
+					onChange={(e) => setTitle(e.target.value)}
 					value={title}
 					placeholder="Titulo"
 				/>
@@ -53,7 +59,10 @@ function AddTask({onClose, open}) {
 					placeholder="Descripcion"
 					value={description}
 				></textarea>
-				<input type="file" onChange={imageHandler}/>
+				<div className="image_edit">
+					<input type="file" onChange={imageHandler} />
+					<img src={imageUrl} alt="" />
+				</div>
 				<button type="submit">Guardar</button>
 			</form>
 		</Modal>

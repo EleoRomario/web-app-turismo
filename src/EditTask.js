@@ -3,7 +3,7 @@ import { useState } from "react";
 import "./editTask.css";
 import { doc, updateDoc } from "firebase/firestore";
 import { db, storage } from "./firebase";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 function EditTask({
 	open,
@@ -17,16 +17,19 @@ function EditTask({
 	const [description, setDescription] = useState(toEditDescription);
 	const [image, setImage] = useState(toEditImage);
 
-	const imageHandler = async (e) => {
+	const imageHandler = (e) => {
 		const archivo = e.target.files[0];
+    if(!archivo) return;
 		const storageRef = ref(storage, `images/${archivo.name}`);
-		const uploadImage = uploadBytesResumable(storageRef, archivo);
-		console.log("archivo cargado:", archivo.name);
-		const enlaceUrl = await getDownloadURL(uploadImage.snapshot.ref);
-		setImage(enlaceUrl);
+		uploadBytes(storageRef, archivo).then(
+			(snapshot) => {
+				getDownloadURL(snapshot.ref).then((downloadURL) => {
+					setImage(downloadURL);
+				});
+			}
+		);
 	};
 
-	
 	/* function to update firestore */
 	const handleUpdate = async (e) => {
 		e.preventDefault();
